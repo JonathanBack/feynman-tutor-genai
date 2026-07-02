@@ -1,6 +1,6 @@
 # Chaves e credenciais
 .env
-
+keys/
 # Ambientes virtuais
 .conda/
 env/
