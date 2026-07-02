@@ -5,7 +5,7 @@
 ---
 
 ## Link da Aplicação em Produção
-* **Acesse o Chatbot aqui:** `http://64.181.174.184:8503`
+* **Acesse o Chatbot aqui:** `http://64.181.174.184:8501`
 
 ---
 
@@ -21,7 +21,7 @@ Para garantir a estabilidade e a acessibilidade global do assistente, a aplicaç
 * **Máquina Virtual:** VM.Standard.E2.1.Micro
 * **Recursos Computacionais:** 1 OCPUs / 1GB de RAM 
 * **Sistema Operacional:** Ubuntu 22.04 
-* **Rede:** Configuração de listas de segurança (Security Lists) liberando tráfego de entrada na porta ingress TCP `8503`.
+* **Rede:** Configuração de listas de segurança (Security Lists) liberando tráfego de entrada na porta ingress TCP `8501`.
 
 ### 3. Modelo Escolhido
 * **Nome do Modelo:** `mistralai/ministral-14b-instruct-2512` (disponibilizado via NVIDIA NIM/Cloud)
@@ -37,7 +37,7 @@ Para garantir a estabilidade e a acessibilidade global do assistente, a aplicaç
 
 ### 5. Implantação e Desafios
 O processo de publicação na Oracle Cloud envolveu a criação da instância, clonagem do repositório Git, configuração do ambiente conda e execução em background através de gerenciadores de processo (como `nohup` ou `tmux`).
-* **Principais Desafios:** O maior desafio técnico centrou-se na liberação do tráfego de rede na Oracle Cloud. Além de abrir a porta `8503` no painel web da OCI (VCN Security Lists), foi necessário configurar o firewall interno do Linux para permitir que requisições externas acessassem o servidor Streamlit.
+* **Principais Desafios:** O maior desafio técnico centrou-se na liberação do tráfego de rede na Oracle Cloud. Além de abrir a porta `8501` no painel web da OCI (VCN Security Lists), foi necessário configurar o firewall interno do Linux para permitir que requisições externas acessassem o servidor Streamlit.
 
 ### 6. Discussão e Lições Aprendidas
 * **Lições Aprendidas:** A atividade consolidou conceitos práticos de engenharia de prompt avançada (System Prompts restritivos) e provou o valor de modelos open-source para interações com usuários. Além disso, reforçou a importância do DevOps básico na computação em nuvem.
