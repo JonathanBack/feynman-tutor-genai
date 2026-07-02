@@ -12,12 +12,10 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 dotenv_path = os.path.join(base_dir, '.env')
 load_dotenv(dotenv_path)
 
-# Puxa a chave do ambiente
 NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 
-# Validação visual rápida no terminal
 if not NVIDIA_API_KEY:
-    print("❌ ERRO: A variável NVIDIA_API_KEY não foi carregada. Verifique o arquivo .env!")
+    print("ERRO: A variável NVIDIA_API_KEY não foi carregada. Verifique o arquivo .env!")
 
 client = OpenAI(
   base_url = "https://integrate.api.nvidia.com/v1",
@@ -103,18 +101,13 @@ for message in st.session_state.chat_history:
 user_question = st.chat_input("Digite sua resposta ou conceito aqui...")
 
 if user_question:
-    # Salva e exibe a mensagem do usuário
     st.session_state.chat_history.append({"role": "user", "content": user_question})
     with st.chat_message("user"):
         st.markdown(user_question)
-
-    # Prepara a lista de mensagens para enviar à API
-    # Inclui o SYSTEM_PROMPT na primeira posição para guiar o comportamento
     api_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     for msg in st.session_state.chat_history:
         api_messages.append({"role": msg["role"], "content": msg["content"]})
 
-    # Resposta do DeepSeek da NVIDIA
     with st.chat_message("assistant"):
         with st.spinner("Pensando..."):
             try:
