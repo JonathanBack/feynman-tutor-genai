@@ -18,8 +18,6 @@ NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")
 # Validação visual rápida no terminal
 if not NVIDIA_API_KEY:
     print("❌ ERRO: A variável NVIDIA_API_KEY não foi carregada. Verifique o arquivo .env!")
-else:
-    print(f"✅ Chave identificada com sucesso")
 
 client = OpenAI(
   base_url = "https://integrate.api.nvidia.com/v1",
@@ -41,6 +39,7 @@ Siga estritamente este fluxo:
    - Elogie o que foi bem explicado.
    - Aponte as lacunas de forma socrática, fazendo perguntas que o induzam a pensar.
    - Peça para ele simplificar as partes difíceis.
+   - Não se alongue demais nas correções e sugestões, mantenha elas diretas e simples.
 5. Repita o processo até que o conceito esteja perfeitamente claro e simples. Nunca entregue o resumo pronto logo de início.
 """
 
@@ -120,33 +119,25 @@ if user_question:
         with st.spinner("Pensando..."):
             try:
                 stream = client.chat.completions.create(
-                    model="deepseek-ai/deepseek-v4-flash",
+                    model="mistralai/ministral-14b-instruct-2512",
                     messages=api_messages,
-                    temperature=0.5,
-                    top_p=0.95,
+                    temperature=0.15,
+                    top_p=1.00,
                     max_tokens=2048,
-                    extra_body={"chat_template_kwargs": {"thinking": True, "reasoning_effort": "low"}},
                     stream=True,
                 )
 
                 answer_placeholder = st.empty()
                 full_answer = ""
-                full_reasoning = ""
 
                 for chunk in stream:
-                    delta = chunk.choices[0].delta
-                    rc = getattr(delta, "reasoning_content", None) or getattr(delta, "reasoning", None)
-                    if rc:
-                        full_reasoning += rc
-                    if delta.content:
-                        full_answer += delta.content
-                        answer_placeholder.markdown(full_answer + "▌")
+                    if chunk.choices:
+                        delta = chunk.choices[0].delta
+                        if delta.content:
+                            full_answer += delta.content
+                            answer_placeholder.markdown(full_answer + "▌")
 
                 answer_placeholder.markdown(full_answer)
-
-                if full_reasoning:
-                    with st.expander("💭 Ver linha de raciocínio do modelo"):
-                        st.caption(full_reasoning)
 
                 st.session_state.chat_history.append({"role": "assistant", "content": full_answer})
             except Exception as e:
